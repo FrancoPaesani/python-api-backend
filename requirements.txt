@@ -1,0 +1,11 @@
+alembic==1.14.1
+email-validator==2.2.0
+Faker==35.0.0
+fastapi==0.115.6
+httpx==0.28.1
+pre-commit==4.1.0
+pytest
+pytest-cov==6.0.0
+python-dotenv==1.0.1
+SQLAlchemy==2.0.37
+uvicorn==0.34.0

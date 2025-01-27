@@ -1,0 +1,17 @@
+permissions_data = [
+    {"code": "APT", "name": "ADD PATIENT"},
+    {"code": "UPT", "name": "UPDATE PATIENT"},
+    {"code": "GUP", "name": "GET USER PATIENTS"},
+    {"code": "ANU", "name": "ASSIGN PATIENT TO USER"},
+    {"code": "GVS", "name": "GET VITAL SIGNS"},
+    {"code": "RVS", "name": "REGISTER VITAL SIGNS"},
+    {"code": "RAU", "name": "REGISTER ACTION TO USER"},
+    {"code": "GPR", "name": "GET PATIENT REGISTRY"},
+    {"code": "GAC", "name": "GET ACTIONS"},
+    {"code": "CAC", "name": "CREATE ACTION"},
+    {"code": "CUS", "name": "CREATE USER"},
+    {"code": "CPM", "name": "CREATE PERMISSION"},
+    {"code": "APU", "name": "ASSIGN PERMISSION TO USER"},
+    {"code": "EUS", "name": "ENABLE USER"},
+    {"code": "DUS", "name": "DISABLE USER"},
+]
