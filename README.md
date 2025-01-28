@@ -28,7 +28,7 @@ This API is developed under a 4 layer architecture:
 
 ![Logs Integration](logs_integration.png)
 
-## Technical Features (include at least 1): 
+## Technical Features: 
 1. Lock the application dependencies (e.g., pipenv, poetry, pdm). ✅
 2. Add testing with Pytest: ✅
     - a. Add unit tests, leveraging fixtures, mocks, and patches
