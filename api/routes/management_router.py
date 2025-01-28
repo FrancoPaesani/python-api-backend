@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
 from decorators.auth_decorators import validate_login
@@ -51,6 +51,7 @@ def create_permission(
 
 @user_router.post("/users/permissions/")
 def assign_permission_to_user(
+    request: Request,
     user_id: int,
     permission_id: int,
     db: Session = Depends(get_db),
@@ -60,7 +61,7 @@ def assign_permission_to_user(
     try:
         user_permission = ManagementService(
             PermissionRepository(db), UserRepository(db)
-        ).assign_permission(user_id, permission_id)
+        ).assign_permission(user_id, permission_id, request.state.user.id)
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=500)
     return user_permission

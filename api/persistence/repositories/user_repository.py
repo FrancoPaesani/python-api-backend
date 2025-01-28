@@ -108,9 +108,9 @@ class UserRepository:
 
         return None
 
-    def assign_permission(self, user_id: int, permission_id: int):
+    def assign_permission(self, user_id: int, permission_id: int, user_id_created: int):
         user_permission_db = UserPermissionsDB(
-            user_id=user_id, permission_id=permission_id
+            user_id=user_id, permission_id=permission_id, user_created=user_id_created
         )
 
         self.db.add(user_permission_db)

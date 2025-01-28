@@ -96,7 +96,7 @@ def create_user_and_assign_all_permissions(create_user, db_session_client):
     permissions = management_service.get_all_permissions()
 
     for x in permissions:
-        management_service.assign_permission(user_id, x.id)
+        management_service.assign_permission(user_id, x.id, user_id)
 
     yield create_user
 

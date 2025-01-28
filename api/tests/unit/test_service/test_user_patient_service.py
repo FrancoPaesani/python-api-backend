@@ -21,10 +21,10 @@ def mock_user_repository():
 
 def create_patient(patient_id) -> Patient:
     weight = fake.random_number(digits=2, fix_len=False)
-    while weight < 0:
+    while weight <= 0:
         weight = fake.random_number(digits=2, fix_len=False)
     height = height = fake.random_number(digits=3, fix_len=False) / 10
-    while height < 0:
+    while height <= 0:
         height = height = fake.random_number(digits=3, fix_len=False) / 10
     return Patient(
         id=patient_id,

@@ -82,12 +82,12 @@ def test_assign_permission_success(management_service, mock_user_repository):
     mock_user_repository.get_permissions.return_value = user_permissions
     mock_user_repository.assign_permission.return_value = True
 
-    result = management_service.assign_permission(user_id, permission_id)
+    result = management_service.assign_permission(user_id, permission_id, user_id)
 
     assert result is True
     mock_user_repository.get_permissions.assert_called_once_with(user_id)
     mock_user_repository.assign_permission.assert_called_once_with(
-        user_id, permission_id
+        user_id, permission_id, user_id
     )
 
 
@@ -101,7 +101,7 @@ def test_assign_permission_duplicate(management_service, mock_user_repository):
     with pytest.raises(
         Exception, match="El permiso ya se encuentra asignado al usuario"
     ):
-        management_service.assign_permission(user_id, permission_id)
+        management_service.assign_permission(user_id, permission_id, user_id)
 
     mock_user_repository.get_permissions.assert_called_once_with(user_id)
     mock_user_repository.assign_permission.assert_not_called()

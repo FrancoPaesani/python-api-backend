@@ -105,7 +105,7 @@ def test_create_user_then_create_permission_and_assign_to_user(db_session):
     assert permission_in_db is not None
     assert permission_in_db.name == name
 
-    user_repo.assign_permission(new_user.id, permission_in_db.id)
+    user_repo.assign_permission(new_user.id, permission_in_db.id, new_user.id)
 
     user_permissions = user_repo.get_permissions(new_user.id)
 
