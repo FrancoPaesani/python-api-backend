@@ -11,3 +11,5 @@ WORKERS = int(os.getenv("WORKERS") or 1)
 VERSION = os.getenv("VERSION")
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+
+JWT_SECRET = os.getenv("JWT_SECRET")
