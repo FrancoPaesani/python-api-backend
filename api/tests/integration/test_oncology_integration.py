@@ -138,3 +138,38 @@ def test_register_action(test_client, initialize_user_and_session):
     data = response.json()
     assert data["patient_id"] == action_payload["patient_id"]
     assert data["action_id"] == action_payload["action_id"]
+
+
+def test_register_two_actions_and_retrieve_patient_registry(
+    test_client, initialize_user_and_session
+):
+    patient_payload = create_patient()
+    patient_response = test_client.post("/oncology/patient/", json=patient_payload)
+    patient_id = patient_response.json()["id"]
+
+    action_id_1 = fake.random_int(min=1, max=5)
+
+    action_payload = {
+        "patient_id": patient_id,
+        "action_id": action_id_1,
+        "comment": fake.text(max_nb_chars=50),
+    }
+    response = test_client.post("/oncology/patient/action/", json=action_payload)
+
+    action_payload_2 = {
+        "patient_id": patient_id,
+        "action_id": fake.random_int(min=1, max=5),
+        "comment": fake.text(max_nb_chars=50),
+    }
+    response = test_client.post("/oncology/patient/action/", json=action_payload_2)
+
+    response = test_client.get(
+        "/oncology/patient/action/?action_id="
+        + str(action_id_1)
+        + "&patient_id="
+        + str(patient_id)
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert len(data) == 1
