@@ -1,5 +1,5 @@
 class Action:
-    def __init__(self, description: str, id: int = None):
+    def __init__(self, description: str, id: int | None = None):
         self.set_description(description)
         self.id = id
 

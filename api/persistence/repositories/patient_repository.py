@@ -57,16 +57,16 @@ class PatientRepository:
 
         return PatientRepository.to_domain(patient_db)
 
-    def get_patient_by_dni(self, patient_dni: int) -> Patient:
+    def get_patient_by_dni(self, patient_dni: int) -> Patient | None:
         patient_db = (
             self.db.query(PatientDB).filter(PatientDB.dni == patient_dni).first()
         )
         if patient_db is not None:
             return PatientRepository.to_domain(patient_db)
-        return patient_db
+        return None
 
-    def get_patient_by_id(self, patient_id: int) -> Patient:
+    def get_patient_by_id(self, patient_id: int) -> Patient | None:
         patient_db = self.db.query(PatientDB).get(patient_id)
         if patient_db is not None:
             return PatientRepository.to_domain(patient_db)
-        return patient_db
+        return None

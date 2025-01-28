@@ -5,7 +5,7 @@ from fastapi import Cookie, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
 from persistence.repositories.permission_repository import PermissionRepository
-from domain.user import User
+from domain.user import User, UserWithPermissions
 from persistence.repositories.user_repository import UserRepository
 from services.auth_service import AuthService
 from services.user_service import UserService
@@ -43,11 +43,11 @@ def validate_route_permission(func):
     @wraps(func)
     def wrapper(request: Request, route_permission: str, db: Session, *args, **kwargs):
         user_id = request.state.user.id
-        user: User = UserService(
+        user: UserWithPermissions = UserService(
             user_repository=UserRepository(db),
             permissions_repository=PermissionRepository(db),
         ).get_user_with_permissions_by_id(user_id)
-        permissions = list(map(lambda x: x.code, user.permissions))
+        permissions = list(map(lambda x: x.code, user.permissions or []))
         if route_permission in permissions:
             return func(request, db=db, *args, **kwargs)
         raise HTTPException(detail="Sin permisos.", status_code=403)

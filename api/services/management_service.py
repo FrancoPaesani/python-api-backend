@@ -27,9 +27,9 @@ class ManagementService:
 
     def assign_permission(self, user_id: int, permission_id: int) -> bool:
         user_permissions = self.user_repository.get_permissions(user_id)
-        user_permissions = list(map(lambda x: x.permission_id, user_permissions))
+        permissions_id = list(map(lambda x: x.permission_id, user_permissions))
 
-        if permission_id in user_permissions:
+        if permission_id in permissions_id:
             raise Exception("El permiso ya se encuentra asignado al usuario")
 
         self.user_repository.assign_permission(user_id, permission_id)

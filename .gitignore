@@ -6,6 +6,7 @@ api/migrations/README.md
 buss.db
 docker-compose.yaml
 Dockerfile
+TODO.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

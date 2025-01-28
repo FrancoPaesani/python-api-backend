@@ -31,8 +31,10 @@ class UserService:
         return self.user_repository.change_state(user_id, False)
 
     def get_user_with_permissions_by_id(self, user_id: int) -> UserWithPermissions:
-        user = self.user_repository.get_user_by_id(user_id)
-        permissions = self.permissions_repository.get_user_permissions(user.id)
+        user: User | None = self.user_repository.get_user_by_id(user_id)
+        permissions = self.permissions_repository.get_user_permissions(user_id)
+
+        user = UserWithPermissions(**user.__dict__)
 
         user.permissions = permissions
 

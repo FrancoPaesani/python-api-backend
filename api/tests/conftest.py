@@ -111,4 +111,6 @@ def initialize_user_and_session(test_client, create_user_and_assign_all_permissi
         json=create_credentials(code=user_code, hashed_password=user_password),
     )
 
+    print(response.json())
+
     yield UserWithPermissions(**response.json())

@@ -28,13 +28,13 @@ class PermissionRepository:
 
         return permission
 
-    def get_permission_by_code(self, code: str) -> Permission:
+    def get_permission_by_code(self, code: str) -> Permission | None:
         permission_db = (
             self.db.query(PermissionsDB).filter(PermissionsDB.code == code).first()
         )
         if permission_db is not None:
             return PermissionRepository.to_domain(permission_db)
-        return permission_db
+        return None
 
     def get_all_permissions(self) -> list[Permission]:
         permissions_db = self.db.query(PermissionsDB).all()

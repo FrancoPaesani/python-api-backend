@@ -93,20 +93,20 @@ class UserRepository:
 
         return UserRepository.user_to_domain(user_db)
 
-    def get_user_by_id(self, user_id: int) -> User:
+    def get_user_by_id(self, user_id: int) -> User | None:
         user_db = self.db.query(UserDB).get(user_id)
 
         if user_db is not None:
             return UserRepository.user_to_domain(user_db)
-        return user_db
+        return None
 
-    def get_user_by_code(self, user_code: str) -> User:
+    def get_user_by_code(self, user_code: str) -> User | None:
         user_db = self.db.query(UserDB).filter(UserDB.code == user_code).first()
 
         if user_db is not None:
             return UserRepository.user_to_domain(user_db)
 
-        return user_db
+        return None
 
     def assign_permission(self, user_id: int, permission_id: int):
         user_permission_db = UserPermissionsDB(
@@ -119,7 +119,7 @@ class UserRepository:
 
         return UserRepository.user_permission_to_domain(user_permission_db)
 
-    def get_permissions(self, user_id: int) -> list[UserPermissionsDB]:
+    def get_permissions(self, user_id: int) -> list[UserPermission]:
         user_permissions_db = (
             self.db.query(UserPermissionsDB)
             .filter(UserPermissionsDB.user_id == user_id)
@@ -146,8 +146,9 @@ class UserRepository:
 
     def create_user_session(self, user_session: UserSession) -> UserSession:
         last_session = self.get_user_session_by_id(user_session.user_id)
+
         if last_session is not None:
-            self.delete_user_session(self.user_session_to_domain(last_session))
+            self.delete_user_session(last_session)
 
         user_session_db = self.user_session_from_domain(user_session)
 
@@ -157,11 +158,13 @@ class UserRepository:
 
         return self.user_session_to_domain(user_session_db)
 
-    def get_user_session_by_id(self, user_id: int) -> UserSession:
+    def get_user_session_by_id(self, user_id: int) -> UserSession | None:
         user_session_db = self.db.query(UserSessionDB).get(user_id)
-        return user_session_db
+        if user_session_db is None:
+            return None
+        return self.user_session_to_domain(user_session_db)
 
-    def get_user_session_by_token(self, jwt_token: str) -> UserSession:
+    def get_user_session_by_token(self, jwt_token: str) -> UserSession | None:
         user_session_db = (
             self.db.query(UserSessionDB)
             .filter(UserSessionDB.jwt_token == jwt_token)
@@ -171,4 +174,4 @@ class UserRepository:
         if user_session_db is not None:
             return self.user_session_to_domain(user_session_db)
 
-        return user_session_db
+        return None

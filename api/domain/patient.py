@@ -17,9 +17,9 @@ class Patient:
         name: str,
         birth_date: date,
         sex_id: int,
-        id: int = None,
-        weight: Decimal = None,
-        height: Decimal = None,
+        id: int | None = None,
+        weight: Decimal | None = None,
+        height: Decimal | None = None,
     ):
         self.set_dni(dni)
         self.set_name(name)
@@ -51,21 +51,26 @@ class Patient:
             raise ValueError("La fecha de nacimiento debe ser igual o anterior a hoy.")
         self.birth_date = birth_date
 
-    def set_weight(self, weight: Decimal):
+    def set_weight(self, weight: Decimal | None):
         if weight is not None and weight <= 0:
             raise ValueError("El peso del paciente debe ser mayor a cero.")
         self.weight = weight
 
-    def set_height(self, height: Decimal):
+    def set_height(self, height: Decimal | None):
         if height is not None and height <= 0:
             raise ValueError("La altura del paciente debe ser mayor a cero.")
         self.height = height
 
 
 class PatientVitalSigns:
-    info: list[
-        Union[PressureInfo, PulseRateInfo, RespirationRateInfo, TemperatureInfo]
-    ] = None
+    info: (
+        list[
+            Union[
+                PressureInfo, PulseRateInfo, RespirationRateInfo, TemperatureInfo, dict
+            ]
+        ]
+        | None
+    ) = None
 
     def __init__(
         self,
@@ -75,9 +80,9 @@ class PatientVitalSigns:
         diastolic_pressure: Decimal,
         pulse_rate: Decimal,
         respiration_rate: Decimal,
-        weight: Decimal,
-        height: Decimal,
-        vitalsign_id: int = None,
+        weight: Decimal | None,
+        height: Decimal | None,
+        vitalsign_id: int | None = None,
     ):
         self.vitalsign_id = vitalsign_id
         self.patient_id = patient_id
@@ -114,12 +119,12 @@ class PatientVitalSigns:
             raise ValueError("El ritmo respiratorio debe ser mayor a cero.")
         self.respiration_rate = respiration_rate
 
-    def set_weight(self, weight: Decimal):
-        if weight <= 0:
+    def set_weight(self, weight: Decimal | None):
+        if weight is not None and weight <= 0:
             raise ValueError("El peso debe ser mayor a cero.")
         self.weight = weight
 
-    def set_height(self, height: Decimal):
-        if height <= 0:
+    def set_height(self, height: Decimal | None):
+        if height is not None and height <= 0:
             raise ValueError("La altura debe ser mayor a cero.")
         self.height = height

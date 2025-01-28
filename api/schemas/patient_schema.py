@@ -27,14 +27,14 @@ class PatientResponse(PatientBase):
     id: int
 
 
-class PatientUpdateRequest(PatientBase):
+class PatientUpdateRequest(BaseModel):
     id: int
-    dni: int = None
-    name: str = None
-    birth_date: date = None
-    sex_id: int = None
-    weight: Decimal = None
-    height: Decimal = None
+    dni: int | None = None
+    name: str | None = None
+    birth_date: date | None = None
+    sex_id: int | None = None
+    weight: Decimal | None = None
+    height: Decimal | None = None
 
     @field_validator("name", mode="before")
     @classmethod

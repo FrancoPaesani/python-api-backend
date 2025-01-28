@@ -33,7 +33,9 @@ class PatientService:
     def update_patient(self, patient: PatientUpdateRequest) -> Patient:
         patient_fields = patient.__dict__
         if patient.dni is not None:
-            result: Patient = self.patient_repository.get_patient_by_dni(patient.dni)
+            result: Patient | None = self.patient_repository.get_patient_by_dni(
+                patient.dni
+            )
             if result is not None and result.id != patient.id:
                 raise ValueError(
                     "El DNI "

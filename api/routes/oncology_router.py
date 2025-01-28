@@ -44,19 +44,21 @@ def add_patient(
     route_permission: str = "APT",
 ):
     try:
-        patient = PatientService(PatientRepository(db)).create_patient(patient)
+        created_patient = PatientService(PatientRepository(db)).create_patient(patient)
 
         UserPatientsService(
             userpatients_repository=UserPatientsRepository(db),
             user_repository=UserRepository(db),
         ).assign_patient_to_user(
-            UserPatientRequest(user_id=request.state.user.id, patient_id=patient.id)
+            UserPatientRequest(
+                user_id=request.state.user.id, patient_id=created_patient.id
+            )
         )
     except ValueError as e:
         raise HTTPException(detail=str(e), status_code=400)
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=500)
-    return patient
+    return created_patient
 
 
 @oncology_router.put("/patient/", response_model=PatientResponse)
@@ -77,17 +79,19 @@ def update_patient(
             .patients
         )
 
-        user_has_patient = patient.id in list(map(lambda x: x.id, patients_from_user))
+        user_has_patient = patient.id in list(
+            map(lambda x: x.id, patients_from_user or [])
+        )
 
         if not (user_has_patient):
             raise HTTPException(detail=str("Sin permisos."), status_code=403)
 
-        patient = PatientService(PatientRepository(db)).update_patient(patient)
+        updated_patient = PatientService(PatientRepository(db)).update_patient(patient)
     except ValueError as e:
         raise HTTPException(detail=str(e), status_code=400)
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=500)
-    return patient
+    return updated_patient
 
 
 @oncology_router.get("/user/patient/", response_model=UserResponse)
@@ -128,7 +132,7 @@ def assign_patient_to_user(
         )
 
         user_has_patient = user_patient.patient_id in list(
-            map(lambda x: x.id, patients_from_user)
+            map(lambda x: x.id, patients_from_user or [])
         )
 
         if not (user_has_patient):
@@ -165,7 +169,9 @@ def get_vital_signs(
             .patients
         )
 
-        user_has_patient = patient_id in list(map(lambda x: x.id, patients_from_user))
+        user_has_patient = patient_id in list(
+            map(lambda x: x.id, patients_from_user or [])
+        )
 
         if not (user_has_patient):
             raise HTTPException(detail=str("Sin permisos."), status_code=403)
@@ -174,7 +180,9 @@ def get_vital_signs(
             VitalSignsRepository(db), patient_repository=PatientRepository(db)
         ).get_vital_signs(patient_id)
 
-        vital_signs.info = list(map(lambda x: x.__dict__, vital_signs.info))
+        for v in vital_signs:
+            v.info = list(map(lambda x: x.__dict__, v.info or []))
+
     except ValueError as e:
         raise HTTPException(detail=str(e), status_code=400)
     except Exception as e:
@@ -201,23 +209,25 @@ def register_vital_signs(
         )
 
         user_has_patient = vital_signs.patient_id in list(
-            map(lambda x: x.id, patients_from_user)
+            map(lambda x: x.id, patients_from_user or [])
         )
 
         if not (user_has_patient):
             raise HTTPException(detail=str("Sin permisos."), status_code=403)
 
-        vital_signs = VitalSignsService(
+        registered_vital_signs = VitalSignsService(
             VitalSignsRepository(db), patient_repository=PatientRepository(db)
         ).register_vital_signs(vital_signs)
 
-        vital_signs.info = list(map(lambda x: x.__dict__, vital_signs.info))
+        registered_vital_signs.info = list(
+            map(lambda x: x.__dict__, registered_vital_signs.info or [])
+        )
 
     except ValueError as e:
         raise HTTPException(detail=str(e), status_code=400)
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=500)
-    return vital_signs
+    return registered_vital_signs
 
 
 @oncology_router.post("/patient/action/", response_model=PatientRegistryResponse)
@@ -239,7 +249,7 @@ def register_action(
         )
 
         user_has_patient = patient_registry.patient_id in list(
-            map(lambda x: x.id, patients_from_user)
+            map(lambda x: x.id, patients_from_user or [])
         )
 
         if not (user_has_patient):
@@ -273,7 +283,9 @@ def get_patient_registry(
             .patients
         )
 
-        user_has_patient = patient_id in list(map(lambda x: x.id, patients_from_user))
+        user_has_patient = patient_id in list(
+            map(lambda x: x.id, patients_from_user or [])
+        )
 
         if not (user_has_patient):
             raise HTTPException(detail=str("Sin permisos."), status_code=403)

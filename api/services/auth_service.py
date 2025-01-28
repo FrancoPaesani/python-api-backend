@@ -29,14 +29,13 @@ class AuthService:
     def authenticate_user(self, credentials: LoginUserRequest) -> UserWithPermissions:
         user = self.user_repository.get_user_by_code(user_code=credentials.code)
 
-        if user is None:
+        if user is None or user.id is None:
             raise ConnectionRefusedError("Usuario inválido.")
 
         if user.hashed_password != credentials.hashed_password:
             raise ConnectionRefusedError("Usuario inválido.")
 
         user_session = self.create_user_session(user.id)
-
         permissions = self.permissions_repository.get_user_permissions(user.id)
 
         user = UserWithPermissions(**user.__dict__)
@@ -46,7 +45,7 @@ class AuthService:
 
         return user
 
-    def get_user_session(self, jwt_token: str) -> UserSession:
+    def get_user_session(self, jwt_token: str) -> UserSession | None:
         return self.user_repository.get_user_session_by_token(jwt_token)
 
     def logout_user(self, user_id: int) -> bool:

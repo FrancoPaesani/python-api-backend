@@ -115,6 +115,7 @@ def test_register_vital_signs(test_client, initialize_user_and_session):
     response = test_client.post(
         "/oncology/patient/vitalsigns/", json=vital_signs_payload
     )
+
     assert response.status_code == 200
     data = response.json()
     assert data["patient_id"] == vital_signs_payload["patient_id"]

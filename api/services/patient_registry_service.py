@@ -20,11 +20,11 @@ class PatientRegistryService:
             action_id=patient_registry.action_id,
             comment=patient_registry.comment,
         )
-        patient_registry = self.patient_registry_repository.register_action(
+        registered_patient_registry = self.patient_registry_repository.register_action(
             new_patient_registry
         )
 
-        return patient_registry
+        return registered_patient_registry
 
     def get_patient_registry(self, patient_id: int) -> list[PatientRegistry]:
         return self.patient_registry_repository.get_patient_registry(patient_id)

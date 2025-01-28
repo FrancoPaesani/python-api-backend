@@ -45,6 +45,9 @@ class UserPatientsService:
         patients = self.userpatients_repository.get_user_patients(user_id)
         user = self.user_repository.get_user_by_id(user_id)
 
+        if user is None:
+            raise ValueError("Usario no encontrado.")
+
         user.patients = patients
 
         return user

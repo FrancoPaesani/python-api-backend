@@ -7,9 +7,9 @@ class PatientRegistry:
         patient_id: int,
         action_id: int,
         comment: str,
-        timestamp: datetime = None,
-        user_id: int = None,
-        id: int = None,
+        timestamp: datetime | None = None,
+        user_id: int | None = None,
+        id: int | None = None,
     ):
         self.id = id
         self.patient_id = patient_id

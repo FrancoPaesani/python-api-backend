@@ -57,6 +57,9 @@ class VitalSignsService:
     ) -> PatientVitalSigns:
         patient = self.patient_repository.get_patient_by_id(vital_signs.patient_id)
 
+        if patient is None:
+            raise ValueError("El paciente no existe.")
+
         new_vital_signs = PatientVitalSigns(
             patient_id=vital_signs.patient_id,
             temperature=vital_signs.temperature,
@@ -68,22 +71,30 @@ class VitalSignsService:
             height=patient.height,
         )
 
-        vital_signs = self.vital_signs_repository.register_vital_signs(new_vital_signs)
-
-        vital_signs: PatientVitalSigns = self.parse_vital_signs_info(
-            patient, vital_signs
+        registered_vital_signs = self.vital_signs_repository.register_vital_signs(
+            new_vital_signs
         )
 
-        return vital_signs
+        parsed_vital_signs: PatientVitalSigns = self.parse_vital_signs_info(
+            patient, registered_vital_signs
+        )
+
+        return parsed_vital_signs
 
     def get_vital_signs(self, patient_id: int) -> list[PatientVitalSigns]:
         patient = self.patient_repository.get_patient_by_id(patient_id)
+
+        if patient is None:
+            raise ValueError("El paciente no existe.")
 
         vital_signs: list[PatientVitalSigns] = (
             self.vital_signs_repository.get_vital_signs(patient_id)
         )
 
-        for x in vital_signs:
-            x: PatientVitalSigns = self.parse_vital_signs_info(patient, x)
+        vital_signs = list(
+            map(lambda x: self.parse_vital_signs_info(patient, x), vital_signs)
+        )
+        # for x in vital_signs:
+        #     x: PatientVitalSigns = self.parse_vital_signs_info(patient, x)
 
         return vital_signs

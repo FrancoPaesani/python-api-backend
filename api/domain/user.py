@@ -2,18 +2,21 @@ from datetime import datetime
 
 from email_validator import validate_email
 
+from domain.patient import Patient
 from domain.permission import Permission
 
 
 class User:
+    patients: list[Patient] | None = None
+
     def __init__(
         self,
         code: str,
         name: str,
         email: str,
         hashed_password: str,
-        id: int = None,
-        active: bool = None,
+        id: int | None = None,
+        active: bool | None = None,
     ):
         self.id = id
         self.set_code(code)
@@ -65,7 +68,7 @@ class UserSession:
         user_id: int,
         jwt_token: str,
         expiry_date: datetime,
-        created: datetime = None,
+        created: datetime | None = None,
     ):
         self.user_id = user_id
         self.jwt_token = jwt_token
@@ -81,7 +84,7 @@ class UserSession:
 
 
 class UserWithPermissions(User):
-    permissions: list[Permission]
+    permissions: list[Permission] | None
     jwt_token: str
 
     def __init__(
@@ -90,7 +93,7 @@ class UserWithPermissions(User):
         name,
         email,
         hashed_password=None,
-        permissions: list[Permission] = None,
+        permissions: list[Permission] | None = None,
         id=None,
         active=None,
     ):

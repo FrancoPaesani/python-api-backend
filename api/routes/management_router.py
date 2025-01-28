@@ -25,12 +25,12 @@ def create_user(
     route_permission: str = "CUS",
 ):
     try:
-        user = UserService(
+        created_user = UserService(
             UserRepository(db), permissions_repository=PermissionRepository(db)
         ).create_user(user)
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=500)
-    return user
+    return created_user
 
 
 @user_router.post("/permissions/", response_model=PermissionResponse)
@@ -41,12 +41,12 @@ def create_permission(
     route_permission: str = "CPM",
 ):
     try:
-        permission = ManagementService(
+        created_permission = ManagementService(
             PermissionRepository(db), UserRepository(db)
         ).create_permission(permission)
     except Exception as e:
         raise HTTPException(detail=str(e), status_code=500)
-    return permission
+    return created_permission
 
 
 @user_router.post("/users/permissions/")

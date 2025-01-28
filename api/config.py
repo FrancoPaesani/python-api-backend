@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 HOST = os.getenv("HOST")
-PORT = os.getenv("PORT")
+PORT = int(os.getenv("PORT") or "")
 RELOAD = os.getenv("RELOAD")
-WORKERS = os.getenv("WORKERS")
+WORKERS = int(os.getenv("WORKERS") or 1)
 
 VERSION = os.getenv("VERSION")
 
