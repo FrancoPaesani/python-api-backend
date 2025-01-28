@@ -272,6 +272,7 @@ def get_patient_registry(
     db: Session = Depends(get_db),
     validated=Depends(validate_login),
     route_permission: str = "GPR",
+    action_id: int | None = None,
 ):
     try:
         patients_from_user = (
@@ -293,6 +294,11 @@ def get_patient_registry(
         patient_registry = PatientRegistryService(
             PatientRegistryRepository(db)
         ).get_patient_registry(patient_id)
+
+        if action_id is not None:
+            patient_registry = list(
+                filter(lambda x: x.action_id == action_id, patient_registry)
+            )
     except ValueError as e:
         raise HTTPException(detail=str(e), status_code=400)
     except Exception as e:

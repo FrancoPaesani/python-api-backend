@@ -40,7 +40,7 @@ This API is developed under a 4 layer architecture:
 6. Add quality gates using pre-commits to the codebase: 
     - a. Formatting and Linting with Ruff ✅
     - b. Linting with Pylint 
-    - c. Type checking with Mypy 
+    - c. Type checking with Mypy ✅
 7. Make a docker container to easily deploy the application ✅
 8. Protect the service by using Authentication and Authorization ✅
 9. Make the HTTP API RESTFUL following Richardson levels: ✅
@@ -48,3 +48,4 @@ This API is developed under a 4 layer architecture:
     - b. Use HTTP Verbs 
     - c. Implement HATEOAS
 10. Use a database migration tool (e.g Alembic) ✅
+11. Enhance the retrieve endpoints by adding the possibility to filter records by attributes. ✅
