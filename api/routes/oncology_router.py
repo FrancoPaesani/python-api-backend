@@ -70,18 +70,10 @@ def update_patient(
     route_permission: str = "UPT",
 ):
     try:
-        patients_from_user = (
-            UserPatientsService(
-                userpatients_repository=UserPatientsRepository(db),
-                user_repository=UserRepository(db),
-            )
-            .retrieve_user_patients(request.state.user.id)
-            .patients
-        )
-
-        user_has_patient = patient.id in list(
-            map(lambda x: x.id, patients_from_user or [])
-        )
+        user_has_patient = UserPatientsService(
+            userpatients_repository=UserPatientsRepository(db),
+            user_repository=UserRepository(db),
+        ).user_has_patient(user_id=request.state.user.id, patient_id=patient.id)
 
         if not (user_has_patient):
             raise HTTPException(detail=str("Sin permisos."), status_code=403)
@@ -122,17 +114,11 @@ def assign_patient_to_user(
     route_permission: str = "ANU",
 ):
     try:
-        patients_from_user = (
-            UserPatientsService(
-                userpatients_repository=UserPatientsRepository(db),
-                user_repository=UserRepository(db),
-            )
-            .retrieve_user_patients(request.state.user.id)
-            .patients
-        )
-
-        user_has_patient = user_patient.patient_id in list(
-            map(lambda x: x.id, patients_from_user or [])
+        user_has_patient = UserPatientsService(
+            userpatients_repository=UserPatientsRepository(db),
+            user_repository=UserRepository(db),
+        ).user_has_patient(
+            user_id=request.state.user.id, patient_id=user_patient.patient_id
         )
 
         if not (user_has_patient):
@@ -160,18 +146,10 @@ def get_vital_signs(
     route_permission: str = "GVS",
 ):
     try:
-        patients_from_user = (
-            UserPatientsService(
-                userpatients_repository=UserPatientsRepository(db),
-                user_repository=UserRepository(db),
-            )
-            .retrieve_user_patients(request.state.user.id)
-            .patients
-        )
-
-        user_has_patient = patient_id in list(
-            map(lambda x: x.id, patients_from_user or [])
-        )
+        user_has_patient = UserPatientsService(
+            userpatients_repository=UserPatientsRepository(db),
+            user_repository=UserRepository(db),
+        ).user_has_patient(user_id=request.state.user.id, patient_id=patient_id)
 
         if not (user_has_patient):
             raise HTTPException(detail=str("Sin permisos."), status_code=403)
@@ -199,17 +177,11 @@ def register_vital_signs(
     route_permission: str = "RVS",
 ):
     try:
-        patients_from_user = (
-            UserPatientsService(
-                userpatients_repository=UserPatientsRepository(db),
-                user_repository=UserRepository(db),
-            )
-            .retrieve_user_patients(request.state.user.id)
-            .patients
-        )
-
-        user_has_patient = vital_signs.patient_id in list(
-            map(lambda x: x.id, patients_from_user or [])
+        user_has_patient = UserPatientsService(
+            userpatients_repository=UserPatientsRepository(db),
+            user_repository=UserRepository(db),
+        ).user_has_patient(
+            user_id=request.state.user.id, patient_id=vital_signs.patient_id
         )
 
         if not (user_has_patient):
@@ -239,17 +211,11 @@ def register_action(
     route_permission: str = "RAU",
 ):
     try:
-        patients_from_user = (
-            UserPatientsService(
-                userpatients_repository=UserPatientsRepository(db),
-                user_repository=UserRepository(db),
-            )
-            .retrieve_user_patients(request.state.user.id)
-            .patients
-        )
-
-        user_has_patient = patient_registry.patient_id in list(
-            map(lambda x: x.id, patients_from_user or [])
+        user_has_patient = UserPatientsService(
+            userpatients_repository=UserPatientsRepository(db),
+            user_repository=UserRepository(db),
+        ).user_has_patient(
+            user_id=request.state.user.id, patient_id=patient_registry.patient_id
         )
 
         if not (user_has_patient):
@@ -275,18 +241,10 @@ def get_patient_registry(
     action_id: int | None = None,
 ):
     try:
-        patients_from_user = (
-            UserPatientsService(
-                userpatients_repository=UserPatientsRepository(db),
-                user_repository=UserRepository(db),
-            )
-            .retrieve_user_patients(request.state.user.id)
-            .patients
-        )
-
-        user_has_patient = patient_id in list(
-            map(lambda x: x.id, patients_from_user or [])
-        )
+        user_has_patient = UserPatientsService(
+            userpatients_repository=UserPatientsRepository(db),
+            user_repository=UserRepository(db),
+        ).user_has_patient(user_id=request.state.user.id, patient_id=patient_id)
 
         if not (user_has_patient):
             raise HTTPException(detail=str("Sin permisos."), status_code=403)

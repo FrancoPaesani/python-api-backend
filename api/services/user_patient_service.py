@@ -51,3 +51,12 @@ class UserPatientsService:
         user.patients = patients
 
         return user
+
+    def user_has_patient(self, user_id: int, patient_id: int) -> bool:
+        patients_from_user = self.retrieve_user_patients(user_id).patients
+
+        user_has_patient = patient_id in list(
+            map(lambda x: x.id, patients_from_user or [])
+        )
+
+        return user_has_patient
